@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mecanum_robot">
+
+  <!-- ================================================== -->
+  <!-- Parameters -->
+  <!-- ================================================== -->
+  <xacro:property name="wheel_radius" value="0.09"/>
+  <xacro:property name="wheel_width" value="0.04"/>
+
+  <!-- Front–rear distance -->
+  <xacro:property name="wheelbase" value="0.103"/>
+
+  <!-- Left–right distance -->
+  <xacro:property name="wheel_distance" value="0.18"/>
+
+  <xacro:property name="chassis_length" value="0.45"/>
+  <xacro:property name="chassis_width"  value="0.35"/>
+  <xacro:property name="chassis_height" value="0.08"/>
+
+  <!-- ================================================== -->
+  <!-- Base Link -->
+  <!-- ================================================== -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://mp_description/meshes/platform.stl" />
+      </geometry>
+      <origin xyz="0 0 ${chassis_height/2}"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://mp_description/meshes/platform_c.stl" />
+      </geometry>
+      <origin xyz="0 0 ${chassis_height/2}"/>
+    </collision>
+    <inertial>
+      <mass value="10.0"/>
+      <origin xyz="0 0 ${chassis_height/2}"/>
+      <inertia ixx="0.2" iyy="0.2" izz="0.2"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <!-- ================================================== -->
+  <!-- Wheel Macro -->
+  <!-- ================================================== -->
+  <xacro:macro name="mecanum_wheel" params="name x y">
+
+    <link name="${name}_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://mp_description/meshes/wheel.stl" />
+          <!-- <cylinder radius="${wheel_radius}" length="${wheel_width}"/> -->
+        </geometry>
+        <origin rpy="1.5708 0 0"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <origin rpy="1.5708 0 0"/>
+      </collision>
+      <inertial>
+        <mass value="1.0"/>
+        <inertia ixx="0.001" iyy="0.001" izz="0.001"
+                 ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${name}_link"/>
+      <origin xyz="${x} ${y} ${wheel_radius}"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+  </xacro:macro>
+
+  <!-- ================================================== -->
+  <!-- Wheel Instances -->
+  <!-- ================================================== -->
+  <xacro:mecanum_wheel
+    name="front_left"
+    x="${ wheelbase/2 }"
+    y="${ wheel_distance/2 }"/>
+
+  <xacro:mecanum_wheel
+    name="front_right"
+    x="${ wheelbase/2 }"
+    y="${-wheel_distance/2 }"/>
+
+  <xacro:mecanum_wheel
+    name="rear_left"
+    x="${-wheelbase/2 }"
+    y="${ wheel_distance/2 }"/>
+
+  <xacro:mecanum_wheel
+    name="rear_right"
+    x="${-wheelbase/2 }"
+    y="${-wheel_distance/2 }"/>
+
+  <!-- ================================================== -->
+  <!-- ros2_control (Custom Hardware Interface) -->
+  <!-- ================================================== -->
+
+  <!-- <ros2_control name="mecanum_base_mock" type="system">
+
+    <hardware>
+      <plugin>mock_components/GenericSystem</plugin>
+
+      <param name="update_rate">100.0</param>
+    </hardware>
+
+    <joint name="front_left_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="front_right_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="rear_left_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="rear_right_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+
+  </ros2_control> -->
+
+  <ros2_control name="mecanum_base" type="system">
+
+    <hardware>
+      <plugin>robot_interface_test/Robot7DoF</plugin>
+
+      <param name="serial_dev_name">/dev/ttyUSB0</param>
+      <param name="serial_baud_rate">115200</param>
+      <param name="testParam">0</param>
+    </hardware>
+
+    <joint name="front_left_joint">
+      <command_interface name="velocity">
+        <param name="min">-20.0</param>
+        <param name="max">20.0</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="front_right_joint">
+      <command_interface name="velocity">
+        <param name="min">-20.0</param>
+        <param name="max">20.0</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="rear_left_joint">
+      <command_interface name="velocity">
+        <param name="min">-20.0</param>
+        <param name="max">20.0</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="rear_right_joint">
+      <command_interface name="velocity">
+        <param name="min">-20.0</param>
+        <param name="max">20.0</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+
+  </ros2_control> 
+
+
+</robot>
