@@ -60,13 +60,13 @@ def generate_launch_description():
         output="both",
 
         # Debug-friendly; remove prefix when done
-        prefix=[
-            "gdb ",
-            "-ex break robot_interface_test::Robot7DoF::on_init ",
-            "-ex break robot_interface_test::Robot7DoF::read ",
-            "-ex break robot_interface_test::Robot7DoF::write ",
-            "-ex run --args ",
-        ],
+        #prefix=[
+        #    "gdb ",
+        #    "-ex break robot_interface_test::Robot7DoF::on_init ",
+        #    "-ex break robot_interface_test::Robot7DoF::read ",
+        #    "-ex break robot_interface_test::Robot7DoF::write ",
+        #    "-ex run --args ",
+        #],
     )
 
     # ============================================================

@@ -150,12 +150,13 @@
     <hardware>
       <plugin>robot_interface_test/Robot7DoF</plugin>
 
-      <param name="serial_dev_name">/dev/ttyUSB0</param>
+      <param name="serial_dev_name">/dev/ttyUSB1</param>
       <param name="serial_baud_rate">115200</param>
       <param name="testParam">0</param>
     </hardware>
 
     <joint name="front_left_joint">
+      <param name="motor_id"> 5 </param>
       <command_interface name="velocity">
         <param name="min">-20.0</param>
         <param name="max">20.0</param>
@@ -167,6 +168,7 @@
     </joint>
 
     <joint name="front_right_joint">
+    <param name="motor_id"> 0 </param>
       <command_interface name="velocity">
         <param name="min">-20.0</param>
         <param name="max">20.0</param>
@@ -178,6 +180,7 @@
     </joint>
 
     <joint name="rear_left_joint">
+    <param name="motor_id"> 2 </param>
       <command_interface name="velocity">
         <param name="min">-20.0</param>
         <param name="max">20.0</param>
@@ -189,6 +192,7 @@
     </joint>
 
     <joint name="rear_right_joint">
+    <param name="motor_id"> 1 </param>
       <command_interface name="velocity">
         <param name="min">-20.0</param>
         <param name="max">20.0</param>
