@@ -11,7 +11,7 @@
     <visual>
       <origin xyz="0 0 -0.000069" rpy="0 0 0" />
       <geometry>
-        <mesh filename="meshes\base_link_visual.obj" />
+        <mesh filename="package://mp_description/meshes/base_link_visual.obj" />
       </geometry>
     </visual>
     <collision>
@@ -29,7 +29,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="meshes\rear_left_wheel_visual.obj" />
+        <mesh filename="package://mp_description/meshes/rear_left_wheel_visual.obj" />
       </geometry>
     </visual>
     <inertial>
@@ -41,7 +41,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="meshes\front_left_wheel_visual.obj" />
+        <mesh filename="package://mp_description/meshes/front_left_wheel_visual.obj" />
       </geometry>
     </visual>
     <inertial>
@@ -53,7 +53,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="meshes\rear_right_wheel_visual.obj" />
+        <mesh filename="package://mp_description/meshes/rear_right_wheel_visual.obj" />
       </geometry>
     </visual>
     <inertial>
@@ -65,7 +65,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="meshes\front_right_wheel_visual.obj" />
+        <mesh filename="package://mp_description/meshes/front_right_wheel_visual.obj" />
       </geometry>
     </visual>
     <inertial>
