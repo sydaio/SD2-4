@@ -32,12 +32,12 @@ tmux split-window -h -t $SESSION:navigation
 tmux send-keys -t $SESSION:navigation "ros2 run cartographer_ros cartographer_occupancy_grid_node -resolution 0.05 -publish_period_sec 1.0" C-m
 
 # Window 2: Misc
-tmux new-window -t $SESSION -n misc
-tmux send-keys -t $SESSION:misc "ce" C-m
-tmux send-keys -t $SESSION:misc "ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link laser" C-m
+#tmux new-window -t $SESSION -n misc
+#tmux send-keys -t $SESSION:misc "ce" C-m
+#tmux send-keys -t $SESSION:misc "ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link laser" C-m
 
-tmux split-window -h -t $SESSION:misc
-tmux send-keys -t $SESSION:misc "ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link base_footprint" C-m
+#tmux split-window -h -t $SESSION:misc
+#tmux send-keys -t $SESSION:misc "ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link base_footprint" C-m
 
 
 
