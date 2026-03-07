@@ -1,0 +1,58 @@
+common:
+  # before_commands will be executed in each pane before doing anything else. Use this e.g. for
+  #   - sourcing an environment
+  #   - ssh-ing to another machine
+  before_commands:
+    - ce
+    - clear
+
+  # The default window will be the one displayed when first connecting to the tmux session
+  default_window: some_other_window
+parameters:
+  # Parameters specified here can be used below and they can be overwritten at runtime
+  show_layouts: false # This parameter is used together with the if flag below
+  replacement_param: world\! # Parameters can also be used as replacement templates
+
+# Everything will be opened in windows. Windows can have multiple splits.
+windows:
+  - name: Control
+    layout: main-vertical # One can use the default layouts specified by tmux
+    splits:
+      - commands:
+        - ros2 launch mp_control start_mp.py
+      #- commands:
+      #  - ros2 run twist_stamper twist_stamper --ros-args -r /cmd_vel_in:=/spacenav/twist -r cmd_vel_out:=/mecanum_drive_controller/reference -p frame_id:=base_link
+      - commands: #This also stamps the twist 
+        - ros2 run twist_scaler twist_scaler --ros-args -p input_twist_topic:=/cmd_vel -p output_twist_topic:=/mecanum_drive_controller/reference -p force_scale:=0.05 -p torque_scale:=0.1 -p frame_id:=base_link
+      - commands: 
+        - exit
+      - commands: 
+        - exit
+  - name: Navigation
+    layout: even-vertical
+    splits:
+      - commands:
+        - ros2 launch nav2_bringup bringup_launch.py use_localization:=False
+      - commands:
+        - ros2 run cartographer_ros cartographer_node -configuration_directory ~/checkout/mp/colcon_ws/src/navigation/config -configuration_basename cartographer_config.lua
+      - commands:
+        - ros2 run cartographer_ros cartographer_occupancy_grid_node -resolution 0.05 -publish_period_sec 1.0
+
+        
+  #- name: top-bottom
+  #  if: show_layouts
+  #  layout: even-vertical
+  #  splits:
+  #    - commands:
+  #      - echo "top"
+  #    - commands:
+  #      - echo "bottom"
+  #- name: no_split
+  #  # If just one split is desired, just skip it and write the commands directly
+  #  commands:
+  #    - echo "hello ${replacement_param}"
+  #  delay: 1 # Use this to wait before starting the next window
+  #- name: some_other_window
+  #  commands:
+  #    - echo "You landed in your default_window"
+  #    - echo "hello ${replacement_param}"
